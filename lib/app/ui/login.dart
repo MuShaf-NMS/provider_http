@@ -16,6 +16,7 @@ class _LoginState extends State<Login> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   bool connect;
+  String token;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class _LoginState extends State<Login> {
         Provider.of<ConnectionProvider>(context);
     connectionProvider.checkConnection();
     connect = context.watch<ConnectionProvider>().connect;
+    token = context.watch<LoginProvider>().token;
     return Scaffold(
       key: _scaffoldState,
       appBar: AppBar(

@@ -4,6 +4,7 @@ import 'package:provider_http/app/provider/connection.dart';
 import 'package:provider_http/app/provider/login.dart';
 import 'package:provider_http/app/provider/siswa.dart';
 import 'package:provider_http/app/ui/login.dart';
+import 'package:provider_http/app/ui/splashscreen.dart';
 
 class App extends StatelessWidget {
   @override
@@ -22,7 +23,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Login(),
+        home: SplashScreen(),
       ),
     );
   }

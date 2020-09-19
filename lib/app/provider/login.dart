@@ -1,31 +1,45 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:provider_http/app/model/login.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginProvider extends ChangeNotifier {
-  Login _login;
+  bool _isLogin;
   String _token;
-
-  get user => _login;
-
+  String _kucing;
+  get isLogin => _isLogin;
   get token => _token;
+  get kucing => _kucing;
 
-  void setToken(String token) async {
+  void checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
-    _token = prefs.getString('token');
-  }
-
-  void setLogin(Login login) {
-    _login = login;
+    _isLogin = prefs.getBool('isLogin');
     notifyListeners();
   }
 
-  void setLogout(Login logout) {
-    _login = logout;
+  void setLogin(Login login) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLogin', true);
+    prefs.setString('token', login.accessToken);
+    _token = prefs.getString('token');
+    notifyListeners();
+  }
+
+  void setToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _token = prefs.getString('token');
+    notifyListeners();
+  }
+
+  void setKucing() {
+    _kucing = 'Meong';
+    notifyListeners();
+  }
+
+  void setLogout(Login logout) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     notifyListeners();
   }
 
@@ -38,7 +52,6 @@ class LoginProvider extends ChangeNotifier {
     );
     if (response.statusCode == 200) {
       setLogin(getToken(response.body));
-      setToken(getToken(response.body).accessToken);
       return true;
     } else {
       return false;

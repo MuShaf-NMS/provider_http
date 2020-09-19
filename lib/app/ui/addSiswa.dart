@@ -36,7 +36,10 @@ class _AddSiswaState extends State<AddSiswa> {
   @override
   Widget build(BuildContext context) {
     SiswaProvider siswaProvider = Provider.of<SiswaProvider>(context);
+    ConnectionProvider connectionProvider =
+        Provider.of<ConnectionProvider>(context);
     token = context.watch<LoginProvider>().token;
+    connectionProvider.checkConnection();
     connect = context.watch<ConnectionProvider>().connect;
     return Scaffold(
       key: _scaffoldState,

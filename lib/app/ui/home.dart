@@ -24,9 +24,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     LoginProvider loginProvider = Provider.of<LoginProvider>(context);
     SiswaProvider siswaProvider = Provider.of<SiswaProvider>(context);
+    ConnectionProvider connectionProvider =
+        Provider.of<ConnectionProvider>(context);
+    loginProvider.setToken();
     token = context.watch<LoginProvider>().token;
     siswaProvider.getData(token);
     siswa = context.watch<SiswaProvider>().siswa;
+    connectionProvider.checkConnection();
     connect = context.watch<ConnectionProvider>().connect;
     return Scaffold(
       key: _scaffoldState,
@@ -53,7 +57,6 @@ class _HomeState extends State<Home> {
             onPressed: () {
               loginProvider.logout(token).then((value) async {
                 if (value) {
-                  print(token);
                   var result = await Navigator.pushReplacement(
                     _scaffoldState.currentContext,
                     MaterialPageRoute(
@@ -117,6 +120,9 @@ class _HomeState extends State<Home> {
                                         .then((value) {
                                       if (value) {
                                         context.read<SiswaProvider>().setNull();
+                                        context
+                                            .read<LoginProvider>()
+                                            .setKucing();
                                       }
                                     });
                                   } else {
